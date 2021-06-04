@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import TodoList from './TodoList';
 
 export default function App() {
@@ -9,6 +9,17 @@ export default function App() {
 		{id: 3, completed: false, title: 'buy milk'}	
 	]);
 	const [todoTitle, setTodoTitle] = useState('');
+	
+	// Invoke only 1 time
+	useEffect(() => {
+		const raw = localStorage.getItem('todos') || [];
+		setTodos(JSON.parse(raw));
+	}, []);
+	// Invoke every time when changes todos array
+	useEffect(() => {
+		localStorage.setItem('todos', JSON.stringify(todos));
+		console.log('change Todos');
+	}, [todos]);
 
 	const addTodo = event => {
 		if(event.key === 'Enter') {
